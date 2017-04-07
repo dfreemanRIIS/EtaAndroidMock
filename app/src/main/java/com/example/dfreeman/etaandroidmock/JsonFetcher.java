@@ -7,7 +7,7 @@ import java.net.URL;
 public class JsonFetcher {
 
     //Download the URL as text
-    public static String fetchUrl(String urlString) throws Exception {
+    public String fetchUrl(String urlString) throws Exception {
         BufferedReader reader = null;
         try {
             URL url = new URL(urlString);
