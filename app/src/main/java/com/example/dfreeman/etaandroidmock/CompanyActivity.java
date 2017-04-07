@@ -2,6 +2,8 @@ package com.example.dfreeman.etaandroidmock;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class CompanyActivity extends AppCompatActivity {
 
@@ -9,5 +11,8 @@ public class CompanyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company);
+        String[] busNamesArray = getResources().getStringArray(R.array.busnames);
+        ListView busListView = (ListView) findViewById(R.id.busses);
+        busListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, busNamesArray));
     }
 }
