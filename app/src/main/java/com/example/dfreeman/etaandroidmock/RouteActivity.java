@@ -5,19 +5,34 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import org.json.JSONException;
+
 import java.util.ArrayList;
 
 public class RouteActivity extends AppCompatActivity {
 
     public static final String EXTRA_COMPANY = "company";
+
     private ListView routeList;
+
+    private String routeId;
+    private String direction;
+    private String daysActive;
     private String jsonString;
+
     private int companyNumber;
+
     private ArrayList<String> routeNumbersArray;
+
     private JsonParser jsonParser;
+
     private Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +44,24 @@ public class RouteActivity extends AppCompatActivity {
         context = this;
 
         routeList = (ListView) findViewById(R.id.routes);
+
+        routeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    routeId = jsonParser.getRouteId(jsonString, position);
+                    direction = jsonParser.getDirection(jsonString, position);
+                    daysActive = jsonParser.getDaysActive(jsonString, position);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(RouteActivity.this, StopActivity.class);
+                intent.putExtra(StopActivity.EXTRA_COMPANY, companyNumber);
+                intent.putExtra(StopActivity.EXTRA_ROUTEID, routeId);
+                intent.putExtra(StopActivity.EXTRA_DIRECTION, direction);
+                intent.putExtra(StopActivity.EXTRA_DAYSACTIVE, daysActive);
+                startActivity(intent);
+            }
+        });
 
         new AsyncCaller().execute();
     }
@@ -59,4 +92,3 @@ public class RouteActivity extends AppCompatActivity {
         }
     }
 }
-
